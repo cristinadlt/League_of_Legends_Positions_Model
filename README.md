@@ -1,3 +1,4 @@
+# League_of_Legends_Positions_Model
 ## Framing the Problem 
 Within this project, we investigate a prediction problem related to the positions of Champions in League of Legends. More specifically, the prediction problem we focus on is “predicting which position between Top laner or Support a Champion was played as given their past post-game data”. We chose to predict between these two groups in particular because Top and Support are distinct positions that require different areas of skills. Thus, these predictions would give us the ability to determine which position a Champion should be played in, contributing to the preferred outcome of game play. 
 
@@ -35,12 +36,31 @@ Our resulting dataset consisted of 28 datasets and contained 1,393 rows and 11 c
 For our baseline model, we used a decision tree classifier because we are performing binary classification. All the columns described in the previous section were used as features in our model with the `Pos` column as our response variable. Our features and their types were the following:
 
 **Quantitative**: `GP`, `P%`, `W%`, `K`, `D`, `A`, `KDA`, `KP`, `DTH%`
+
 **Nominal**: `Champion`, `Pos`
 
 We one-hot encoded the `Champion` column since it was originally categorical data. We also standardized the `K`, `D`, and `A` columns because they had a large range and we wanted to minimize the impact of outliers. Standardizing also made comparisons between the columns easier. As for the rest of the features, we kept them as is since they were numerical data. 
 
 ### Performance
 The baseline model had an accuracy of approximately 0.79 on our test set. Thus, we believed our model was good to some extent. Our model performed well since we would expect Champions of distinct positions to perform differently and have varying statistics. For example, Champions with the position ‘Support’ may have had more kills than Champions who were played as ‘Top’. The difference in performance would lead to making predictions on positions less complicated.
+
+## Final Model 
+When creating our final model, the features added to our classifier are described below: 
+- `K` / `GP` : average kills per games played
+- `D` / `GP`:  average deaths per games played
+- `A` / `GP`: average assists per games played
+- `KP` - `DTH%`: difference between the kill participation and average share of team total deaths 
+
+We chose to use the proportion `K`/`GP` as a feature because `K` describes cumulative kills, as it is a total, which would vary depending on the amount of games played as specified by `GP`. Due to this variation being based on the number of games played, calculating the rate of kills per game would describe kills in relation to games played. The inclusion of this feature improved the classifier’s performance as it bolstered the differences between positions as seen in patterns of kills. In a similar way, the other components of `KDA` were converted to rates in relation to `GP` for the same reason as they also described total overall quantities rather than values in an individual match.
+
+In addition to these, we also introduced the difference between `KP` and `DTH%` as a feature because the distance between these values was indicative of a type of performance. The importance of kills in relation to deaths may have varied between these two positions. In relation to the performance of the model, including this feature improved predictions as the distances reflected the in-game areas of skills helping to distinguish between the two positions. 
+
+We tested a decision tree classifier and a logistic regression model separately to determine the best modeling algorithm for our final model. After determining the best hyperparameters for both, we ultimately picked the logistic regression model because it returned a higher accuracy for both our training and testing sets. 
+
+For our final model using logistic regression, our hyperparameters were `max_iter` and `solver`. We tuned `solver` because we wanted to check if different solvers fit our data better than the default of 'lbfgs'. We also tuned `max_iter` to determine the best number of iterations for our solver to converge, which impacts the precision of our model. If we used a `max_iter` that was too high, our model could potentially overfit the training data. We used GridSearchCV in order to find the best hyperparameters. The result of our search for the best hyperparameters was 160 for the `max_iter` and ‘liblinear’ for the `solver`.
+
+### Performance
+Our final model’s accuracy was about 0.92 on the test set. Compared to our baseline model’s accuracy of 0.79 on the same test set, the performance of our final model greatly improved over our baseline model’s performance. The new features we engineered as well as our decision to use logistic regression resulted in the improvement between the two models. Additionally, our search for best hyperparameters further refined our predictions which increased our model’s accuracy.
 
 
 
