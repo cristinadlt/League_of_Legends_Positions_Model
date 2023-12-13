@@ -1,4 +1,4 @@
-# League_of_Legends_Positions_Model
+## League of Legends Positions Model
 ## Framing the Problem 
 Within this project, we investigate a prediction problem related to the positions of Champions in League of Legends. More specifically, the prediction problem we focus on is “predicting which position between Top laner or Support a Champion was played as given their past post-game data”. We chose to predict between these two groups in particular because Top and Support are distinct positions that require different areas of skills. Thus, these predictions would give us the ability to determine which position a Champion should be played in, contributing to the preferred outcome of game play. 
 
