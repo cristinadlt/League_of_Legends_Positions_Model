@@ -62,5 +62,27 @@ For our final model using logistic regression, our hyperparameters were 'max_ite
 ### Performance
 Our final model’s accuracy was about 0.92 on the test set. Compared to our baseline model’s accuracy of 0.79 on the same test set, the performance of our final model greatly improved over our baseline model’s performance. The new features we engineered as well as our decision to use logistic regression resulted in the improvement between the two models. Additionally, our search for best hyperparameters further refined our predictions which increased our model’s accuracy.
 
+## Fairness Analysis
+To determine the fairness of our model, we address the question “Does our model perform better for Champions that are popular than it does for Champions that are not?”. Specifically, the groups we are comparing are popular Champions and unpopular Champions. 
 
+Using the `GP` column to determine the number of games played, we found the mean number of games played to be about 5 games. As a result, we define popular Champions to be those that were played in 6 or more games in a single tournament. On the other hand, Champions grouped as unpopular are those that were selected to play in 5 or less games in a single tournament.
+
+**Evaluation Metric**: Accuracy
+
+**Null Hypothesis**: Our model is fair. The accuracy of our model for popular and unpopular Champions are roughly the same. Any observed differences are due to random chance alone.
+
+**Alternative Hypothesis**: Our model is unfair. The accuracy of our model for popular Champions is higher than its accuracy for unpopular Champions. Observed differences cannot be due to random chance alone.
+
+**Test Statistic**: Accuracy of Model for Popular Champions - Accuracy of Model for Unpopular Champions
+
+**Significance Level**: 0.05
+
+<iframe src="assets/empirical-distribution-of-difference-in-accuracy.html" width=800 height=600 frameBorder=0></iframe>
+
+The results of our permutation test are shown above. According to the chart, our observed difference in accuracy was not close to a majority of differences found by our permutation test. 
+
+**P-value** = 0.0001
+
+### Conclusion
+At a significance level of 0.05, we reject the null hypothesis that our model is fair. It is highly likely that the observed difference in the accuracy of our groups cannot be due to random chance alone and that the accuracy of our model for popular Champions is higher than our model's accuracy for unpopular Champions.
 
